@@ -33,15 +33,26 @@
 
   <h3> th:classappend 속성 : 요소에 class 속성 값을 동적으로 추가 </h3>
 
-  <h4 th:classappend="red">th:classappend 테스트중 ... </h4>
+  <h4 th:classappend="red">th:classappend 테스트중 ... </h4> <!-- class="red" 빨간글씨로 출력 -->
 
-  <h4 class="red" th:classappend="deco">th:classappend 테스트중 ... </h4>
+  <h4 class="red" th:classappend="deco">th:classappend 테스트중 ... </h4> 
+  <!-- 기존에 red라는 클래스가 있는 상태에서 동적으로 deco 추가해보기 .. 
+	   class="red deco" 빨간글씨 및 밑줄 출력 -->
   
-  <!-- lt == < ,  gt == > -->
+  <!--
+	lt(less than)    < 기호를 나타냄
+	gt(greater than) > 기호를 나타냄
+  -->
 
-  <!-- num1이 10000 보다 클 경우 -->
+  <!-- num1이 10000 보다 클 경우 (num1은 현재 12345로 10000보다 더 크다)
+	${num1 gt 10000} == ${num1 > 10000}
+	-->
   <h4 class="deco" th:class="${num1 gt 10000} ? green : red">th:classappend 테스트중 ... </h4>
-  
+  <!-- th:class는 기존에 있던 클래스 무시하고 덮어쓰기됨
+	class="deco" 없어지고 class="green"만 남음
+	
+	기존에있던 클래스와, 타임리프 연산 후 클래스를 동적으로 추가하고싶다면 th:classappend를 사용해야함
+	-->
 
 
   <hr>
@@ -51,10 +62,10 @@
     - 객체가 null인지 판단 후 null이 아닌 경우에 수행
   </pre>
 
-  <!-- std가 null인 경우 원래는 오류 발생
+  <!-- member가 null인 경우 ${member.memberNo} 이렇게 접근하면 원래는 오류 발생(null값에서 뭘꺼내겠단거냐)
     -> 안전 탐색 연산자를 쓰면 오류 발생 X
   -->
-   <h4 th:text="${member?.memberNo}">학번</h4>
+   <h4 th:text="${member?.memberNo}">학번</h4> <!-- 타임리프 부분 무시하고 <h4></h4> 태그만 달랑 남음 -->
   <h4 th:text="${std?.studentNo}">학번</h4>
 
 
@@ -70,14 +81,25 @@
 
     [왜 사용할까??]
     - 타임리프 반복문 th:each 는 향상된 for문으로
-    일반 for문의 동작(시작부터 끝까지 몇씩 증가하며 반복)
+    일반 for문의 동작(시작부터 끝까지 몇 씩 증가하며 반복)
     을 못하기 때문에 이를 해결하기 위해서 사용
   </pre>
 
   <ul>
 	  <!-- 11부터 시작해서 20까지 2씩 증가하며 반복 -->
+	  <!-- 1. [11, 13, 15, 17, 19] 로 이루어진 배열 발생
+		   2. 길이 5인 배열을 th:each를 이용하여 향상된 for문으로 반복 수행
+		   3. i에 요소값 순서대로 한번씩 들어옴
+		-->
     <li th:each="i : ${#numbers.sequence(11,20,2)}" 
       th:text="|테스트 ${i}|" ></li>
+	  <!-- 
+		테스트 11
+		테스트 13
+		테스트 15
+		테스트 17
+		테스트 19
+	  -->
   </ul>
 
 
@@ -88,19 +110,29 @@
 
 
   <script th:inline="javascript">
-    // JS Inline - Natural Template
-    
+    // th:inline="javascript (이 코드 있어야 타임리프 문법 적용됨)
+	// -> 타임리프에서 JavaScript 코드를 동적으로 처리할 수 있도록 해줌
     // 스크립트 태그 내부에서 Thymeleaf의 변수나 연산을 사용할 수 있게 함
-
+	
+	/* JavaScript 코드 내에서도 타임리프 변수를 사용할 수 있게 되어, 
+	   HTML이나 JavaScript 내에서 서버 데이터를 동적으로 바인딩 가능 */
+    
     // - HTML 파일 독립 실행 시
     //   JS 내부 타임리프 코드 오류를 발생하지 않게 함
-    
-    // + HTML 문법오류(컴파일 오류)도 해결
+	// -> 타임리프의 Natural Template 특징 덕분.
+	// ->  Natural Template은 HTML 파일을 단독으로 브라우저에서 열었을 때도 
+	//	  정적 콘텐츠로 볼 수 있는 기능.
 
+	// 아래와 같은 코드를 내츄럴 템플릿을 이용한 코드라고 할 수 있음.
     const message = /*[[${message}]]*/ "message값";
     const num1 = /*[[${num1}]]*/ 100;
+	// html 단독 -> message는 "message값" 출력 / num1은 100 출력
+	// 서버 실행 시 -> message는 "타임리프 + Javascript 사용 연습" 출력 / num1은 12345 출력
+	
 
+	// id가 message인 요소의 태그사이 값으로 message 값 넣기
     document.querySelector("#message").innerText = message;
+	// id가 num1인 요소의 태그사이 값으로 num1 값 넣기
     document.querySelector("#num1").innerText = num1;
   </script>
 

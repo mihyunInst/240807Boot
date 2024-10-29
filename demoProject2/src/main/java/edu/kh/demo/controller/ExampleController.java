@@ -93,7 +93,10 @@ public class ExampleController {
 	@PostMapping("ex2") // /example/ex2 POST 방식 매핑
 	public String ex2(Model model) {
 		
-		// Model : 데이터 전달용 객체(request scope)
+		
+		// Model : Spring에서 데이터 전달 역할을 하는 객체
+		//		기본적으로 request scope + session으로 확장 가능
+		
 		
 		model.addAttribute("str", "<h1>테스트 중 &times; </h1>");
 		
@@ -155,10 +158,7 @@ public class ExampleController {
 	
 	@GetMapping("ex5")
 	public String ex5(Model model) {
-		
-		// Model : Spring에서 값 전달 역할을 하는 객체
-		//		기본적으로 request scope + session으로 확장 가능
-		
+
 		model.addAttribute("message", "타임리프 + Javascript 사용 연습");
 		model.addAttribute("num1", 12345);
 		

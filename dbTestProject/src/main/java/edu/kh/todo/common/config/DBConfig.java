@@ -51,6 +51,10 @@ import com.zaxxer.hikari.HikariDataSource;
  * - 읽어온 내용을 생성하려는 Bean에 자동으로 세팅
  * 
  * 
+ * DataSource : Connection 생성 + Connection Pool 지원 하는 객체를
+ * 				참조하기 위한 Java 인터페이스
+ * 				(DriverManager 대안, Java JNDI 기술 이용)
+ * 
  * 
  * @Autowired 
  * - 등록된 Bean 중에서 
@@ -113,55 +117,24 @@ public class DBConfig {
 	
 	
 	///////////  Mybatis 설정 /////////////
-	// Mybatis : Java 애플리케이션에서 SQL을 더 쉽게 사용할 수 있도록 도와주는 영속성 프레임워크.
-	// 영속성 프레임워크(Persistence Framework)는 애플리케이션의 데이터를 
-	// 데이터베이스와 같은 저장소에 영구적으로 저장하고, 
-	// 이를 쉽게 조회, 수정, 삭제할 수 있도록 도와주는 프레임워크
-	
-	// -> MyBatis와 데이터베이스 연결을 설정
 	@Bean
 	public SqlSessionFactory sessionFactory(DataSource dataSource) throws Exception{
-										// 매개변수로 DataSource를 받아와 DB 연결 정보를 사용할 수 있도록함
 		
-		// 반환형 SqlSessionFactory
-		// -> MyBatis에서 SQL 세션(SqlSession)을 생성하는 객체
-		// 1) 데이터베이스와의 통신을 담당하는 SqlSession 객체를 생성
-		// 2) MyBatis 설정과 Mapper 파일 경로 등을 관리하여, 필요한 설정을 기반으로 SqlSession 생성
-		// ->  즉, SqlSessionFactory는 MyBatis와 DB 간의 작업을 위한 세션을 생성하는 공장 역할을 하는 객체
-		
-		// SqlSession
-		// -> MyBatis에서 SQL 쿼리를 실행하고 결과를 가져오는 역할을 하는 주요 객체
-		// 1) SQL 쿼리 실행(select, insert, update, delete와 같은 SQL 명령을 수행)
-		// 2) 트랜잭션 관리
-		// 3) Mapper와 연동 (Mapper 인터페이스 메서드를 호출 가능하게 함)
+		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
 		
 		
-		// MyBatis의 SQL 세션을 생성하는 역할을 합니다.
-		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean(); 
-	
-		/* DB 연결과 SQL의 실행에 대한 모든 정보를 가진 중요한 객체.
-		 * 이 객체가 DataSource를 참조하여 MyBatis와 DB를 연동시킴.
-		 * 
-		 * 
-		 * SqlSession을 만들 수 있는 공장을 생성..*/
-		
-		// MyBatis가 사용할 DataSource를 설정. 이 설정으로 MyBatis가 DB에 연결할 수 있음.
 		sessionFactoryBean.setDataSource(dataSource);
-		/* 매개변수로 받은 DataSource(각종 DB정보 객체)를 이용해서 sqlSessiond을 만드는 공장에 세팅함*/
 		
 		
-		// sessionFactoryBean이라는 공장에 Mybatis를 이용하기 위한 각종 세팅을 함..
-		
-		// 세팅1. mapper.xml(SQL 작성해둘 파일) 파일이 모이는 경로 지정
+		// mapper.xml(SQL) 파일이 모이는 경로 지정
 		// -> Mybatis 코드 수행 시 mapper.xml을 읽을 수 있음
 		// sessionFactoryBean.setMapperLocations("현재프로젝트.자원.어떤파일");
 		
 		sessionFactoryBean.setMapperLocations( 
-					applicationContext.getResources("classpath:/mappers/**.xml")  ); // src/main/resource/mappers하위의 모든 .xml 파일
-					// 현재프로젝트  .  	자원 .  		어떤 파일
+				applicationContext.getResources("classpath:/mappers/**.xml")  );
 		
 		
-		// 세팅2. 해당 패키지 내 모든 클래스의 별칭을 등록
+		// 해당 패키지 내 모든 클래스의 별칭을 등록
 		// - Mybatis는 특정 클래스 지정 시 패키지명.클래스명을 모두 작성해야함
 		//  -> 긴 이름을 짧게 부를 별칭 설정할 수 있음
 		
@@ -170,23 +143,16 @@ public class DBConfig {
 		
 		// ex) (원본) edu.kh.todo.model.dto.Todo   -->  Todo (별칭 등록)
 		sessionFactoryBean.setTypeAliasesPackage("edu.kh.todo");
-		// -> edu.kh.todo 패키지 안의 모든 클래스 이름을 별칭으로 사용해, MyBatis에서 클래스명을 짧게 사용할 수 있음
 		
 		
-		
-		// 세팅3. 마이바티스 설정 파일 경로 지정
+		// 마이바티스 설정 파일 경로 지정
 		sessionFactoryBean.setConfigLocation(
 			applicationContext.getResource("classpath:/mybatis-config.xml"));
 		
-		
-		
-		// 세팅된 내용이 모두 적용된 객체를 반환 -> 스프링 컨테이너에 이 Bean이 등록됨(@Bean 덕분)
+		// 설정 내용이 모두 적용된 객체 반환
 		return sessionFactoryBean.getObject();
 	}
 	
-	// 위에서 열심히 만든 SqlSessionFactory를 이제 여기서 바로 사용..
-	// 결국 SqlSessionTemplate을 만들기 위한 일들이었다.
-	//  마이바티스와 스프링 연동모듈의 핵심이 되는 SqlSessionTemplate
 	
 	// DBCP(DataBase Connection Pool)
 	// SqlSessionTemplate : Connection + DBCP + Mybatis + 트랜잭션 제어 처리
