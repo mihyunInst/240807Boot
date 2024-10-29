@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>타임리프 예제 3</title>
+</head>
+<body>
+  <h1>타임리프 예제 3</h1>
+
+  <h3>링크(URL) 조합에 사용되는 Spring EL  ( @{} )</h3>
+
+  <ul>
+    <li>
+      <a href="/board">게시판(/board)</a>
+    </li>
+
+    <li>
+      <a href="/board?key=제목&query=검색어">게시판 검색</a>
+    </li>
+
+    <!-- ** 타임 리프를 이용한 쿼리스트링 작성법 ** -->
+    <li>
+      <!-- 위에 작성된 a태그의 href 속성값과 똑같이 써보자 (/board?key=제목&query=검색어) -->
+      <a th:href="@{/board(key=${key}, query=${query})}">@{} 사용</a>
+      			<!-- /board?key=제목&query=검색어 --> 
+    </li>
+	
+	<!-- ** 타임 리프를 이용한 요청주소 작성법 ** -->
+	<!-- 요청 주소를 전달받은 변수값으로 사용하는 방법 -->
+	<li>
+		<!-- 이 자리에 number라는 애가 들어올 자리 마련, 이 마련된 자리(number)에 ${boardNo}를 넣음-->
+	  <a th:href="@{/example/ex3/{number}(number=${boardNo})}">/example/ex3/10</a>
+	  
+	  <!-- 몇개든 가능
+	  <a th:href="@{/example/ex3/{number}/{test}(number=${boardNo}, test=${boardNo})}">
+	    /example/ex3/10
+	  </a>
+	  -->
+	</li>
+
+
+    <li>
+      PathVariable : 주소 중 일부분을 변수 값 처럼 사용 
+		<!-- 보통 게시판의 경우 
+			/board/1 (자유게시판)
+			/board/2 (회원게시판)
+			/board/3 (문의게시판)
+			이런식으로 같은 시작 주소에 맨뒤 주소만 다른 경우가 많음
+			
+			이럴때 요청주소마다 따로따로 컨트롤러 단 메서드를 작성해야할까?
+		-->
+      <ul>
+        <li>
+          <a href="/example/ex3/1">/example/ex3/1</a>
+        </li>
+
+        <li>
+          <a href="/example/ex3/2">/example/ex3/2</a>
+        </li>
+
+        <li>
+          <a href="/example/ex3/3">/example/ex3/3</a>
+        </li>
+
+        
+      </ul>
+
+    </li>
+
+  </ul>
+  
+  <!-- html 파일 전체를 하나의 조각으로 취급 -->
+  <th:block th:replace="~{fragments/footer}"></th:block>
+</body>
+</html>

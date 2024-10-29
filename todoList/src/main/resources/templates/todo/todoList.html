@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!-- 현재 HTML 문서에 타임리프 문법을 사용한다고 선언 -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   	<title>TodoList 프로젝트</title>
+   	
+	<link rel="stylesheet" th:href="@{/css/todo.css}">
+</head>
+<body>
+    <!-- 타임리프 변수 선언 -->
+    <section th:with="todoList=${todoList}" class="list-container">
+		
+		<h1>[[${session.loginMember.memberNickname}]]님의 TodoList</h1>
+		
+		<!-- 
+			현재경로 : /todo/todoList
+			 목표경로 : /todo/todoInsert
+			 현재 있는 위치만 변경해주면 됨.
+		--> 
+		<div class="todo-insert-btn-area">
+			<a th:href="@{todoInsert}">Todo 추가</a> 
+		</div>
+		
+		<!-- 타임리프 내장 객체 중 #lists -->
+        <!-- #lists.size(boardList) : todoList의 길이 반환 -->
+        <th:block th:if="${#lists.size(todoList) == 0}">
+        <!-- 조회된 todo 목록이 비어있거나 null 경우 -->
+            <!-- todo 목록 조회 결과가 비어있다면 -->
+            <tr>
+                <th colspan="6">Todo가 존재하지 않습니다.</th>
+            </tr>
+        </th:block>
+		
+		<th:block th:unless="${#lists.size(todoList) == 0}">
+			<!-- 게시글 목록 조회 결과가 있다면 -->
+            <div class="todo-container"> 
+				
+			    <div th:each="todo : ${todoList}" class="todo-box"> <!-- 해당 div를 포함하여 반복함 -->
+					<section class="todo-header">
+					 	<p th:text="${'No.' + todo.rowNum}">Todo 번호(No.1 처럼 출력)</p>
+					 	<!-- todoNo이아닌 rowNum쓰는 이유 : 
+					 	실제로 db에 등록된 todoNo가 n번이여도 
+					 	사용자에겐 마치 본인이 등록한 순서의 번호인것처럼 보여야함 -->
+						
+						<div class="todo-header-btn" th:id="${todo.todoNo}"> 
+														<!-- 진짜 todoNo는 해당 div에 작성해둠 :
+															todoNo를 이용하여 아래에서 완료여부/수정/삭제 등 
+															기능을 수행할 수 있도록 해야함
+														-->
+							<!--<button th:class="${todo.status == 'Y'} ? 'complete-btn' : 'incomplete-btn'">[[${todo.status == 'Y' ? "완료" : "미완료"}]]</button>-->
+							<button th:text="${todo.status} == 'Y' ? '완료' : '미완료'" 
+									th:class="${todo.status} == 'Y' ? 'complete-btn' : 'incomplete-btn'"
+									type="button"
+									name="complete-flag-btn"
+									>완료여부</button>
+							<button type="button" class="delete-btn">삭제</button>
+							<button type="button" class="update-btn">수정</button>
+						</div>			  
+				 	</section>
+				  
+				  <div class="todo-body">
+				    <h4 th:text="${todo.todoTitle}" class="todo-title">Todo 제목</h4>
+				    <p th:text="${todo.todoContent}" class="todo-content">Todo 내용</p>
+				  </div>
+				</div>
+				
+			</div>
+		</th:block>
+		
+		
+	</section>
+	
+	<!-- todo.js 추가 -->
+	<script th:src="@{/js/todo/todoList.js}"></script>
+	
+	<!-- javascript 영역에서 타임리프를 적용/ 해석 함-->
+	<script th:inline="javascript">
+	    
+	    /* Natural Template */
+	    const message = /*[[${message}]]*/ "전달 받은 메세지";
+	    // 타임리프 해석   값(자료형 알아서 해석)    사라짐(설명)
+	
+	    if(message != null) alert(message);
+	</script>
+</body>
+</html>

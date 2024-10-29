@@ -1,0 +1,60 @@
+.login-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 화면의 세로 중앙에 폼을 배치하기 위해 전체 높이로 설정 */
+}
+
+/* 로그인 폼 박스 스타일 */
+.login-form-box {
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 로그인 타이틀 스타일 */
+.login-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-title h1 {
+    color: #333;
+}
+
+/* 입력 필드 스타일 */
+.login-form-box input[type="text"],
+.login-form-box input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* 버튼 박스 스타일 */
+.login-button-box {
+    text-align: center;
+}
+
+/* 로그인 및 회원가입 버튼 스타일 */
+.login-button-box button {
+	padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.login-button-box button:last-child {
+    background-color: #28a745;
+}
+
+.login-button-box button:hover {
+    background-color: #0056b3;
+}

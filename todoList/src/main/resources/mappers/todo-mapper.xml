@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace를 Mapper 인터페이스로 지정 -->
+<mapper namespace="edu.kh.todoList.todo.model.dao.TodoMapper">
+	
+	<resultMap type="Todo" id="todo_rm">
+		<id property="todoNo" column="TODO_NO" />
+		<result property="memberNo" column="MEMBER_NO" />
+		<result property="todoTitle" column="TITLE" />
+		<result property="todoContent" column="CONTENT" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+	
+	<!-- todo 목록 조회 -->
+	<select id="todoListAllView" resultMap="todo_rm">
+		SELECT ROWNUM, TODO_NO, MEMBER_NO, TITLE, CONTENT, 
+		TO_CHAR(REG_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') REG_DATE,
+		STATUS 
+		FROM "TODO"
+		WHERE MEMBER_NO = #{memberNo}
+		ORDER BY ROWNUM DESC
+	</select>
+	
+	<!-- todo 삽입 -->
+	<insert id="todoInsert" parameterType="Todo" useGeneratedKeys="true">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="todoNo">
+  			SELECT TODO_NO_SEQ.NEXTVAL FROM DUAL
+  		</selectKey>
+  		
+  		INSERT INTO TODO
+  		VALUES( #{todoNo}, #{memberNo}, #{todoTitle}, #{todoContent}, DEFAULT, DEFAULT)
+	</insert>
+	
+</mapper>

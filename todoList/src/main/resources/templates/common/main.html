@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- 현재 HTML 문서에 타임리프 문법을 사용한다고 선언 -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>TodoList 프로젝트</title>
+	
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+	<div class="login-form-container">
+		<form th:action="@{/member/login}" method="post" name="login-form" id="loginFrm" class="login-form-box">
+		  	<div class="login-title">
+				<h1>TO DO LIST</h1>
+		  	</div>
+		    <div>
+		      <label for="memberId">아이디</label>
+		      <input type="text" name="memberId" id="memberId" placeholder="아이디를 입력하세요." autocomplete="off">
+		    </div>
+		    <div>
+		      <label for="memberPw">비밀번호</label>
+		      <input type="password" name="memberPw" id="memberPw" placeholder="비밀번호를 입력하세요." autocomplete="off">
+		    </div>
+		    <div class="login-button-box">
+		   	 	<button type="submit">로그인</button>
+		   	 	<button type="button">회원가입</button>
+			</div>
+		</form>
+	</div>
+	
+	<!-- main.js 추가 -->
+	<script th:src="@{/js/main.js}"></script>
+	
+	<!-- javascript 영역에서 타임리프를 적용/ 해석 함-->
+	<script th:inline="javascript">
+	    
+	    /* Natural Template */
+	    const message = /*[[${message}]]*/ "전달 받은 메세지";
+	    // 타임리프 해석   값(자료형 알아서 해석)    사라짐(설명)
+	
+	    if(message != null) alert(message);
+	</script>
+	
+</body>
+</html>
