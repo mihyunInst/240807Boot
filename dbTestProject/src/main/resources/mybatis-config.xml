@@ -3,18 +3,11 @@
 <configuration>
 	<settings>
 		<!-- Java -> DB로 INSERT,UPDATE 시 Java의 null 값을 DB의 NULL로 인식하도록 설정 -->
-		<!-- 
-			SQL에 작성되는 값 자체에 자바의 null 이 있으면 jdbcTypeForNull 에러 발생
-			-> 값 자체가 null 일때 이야기..
-			-> 요청 시 빈문자열 "" 로 제출되는건 null이 아니라서 상관 X
-			** 오라클에서는 NULL과 빈문자열 '' 이 모두 NULL 로 처리 ** 
-		 -->
 		<setting name="jdbcTypeForNull" value="NULL" />
 		
 		<!-- DB의 UnderScore (_) 표기법 <-> Java의 Camel 표기법 두 표기법이 서로 변환 될 수 있도록 매핑하여 
 			Java 필드명(memberId)과 DB 컬럼명(MEMBER_ID)가 서로 연결되게 함 -->
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
-
 	
 </configuration>
