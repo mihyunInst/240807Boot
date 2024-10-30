@@ -40,7 +40,8 @@
   <table border="1" style="border-collapse: collapse;">
 
     <thead>
-      <th>번호</th>
+      <th>행 번호</th>
+      <th>할 일 번호</th>
       <th>할 일 제목</th>
       <th>완료 여부</th>
       <th>등록 날짜</th>
@@ -48,7 +49,16 @@
 
 
     <tbody>
-      <tr th:each="todo : ${todoList}"  th:object="${todo}">
+		
+		<!-- 반복 상태 변수를 사용.(현재 반복중인 객체와 반복 정보를 저장중인 타임리프 변수) 변수명 자유지면 보통 iterStat 라고 많이 부름
+			 작성법  th:each="현재접근객체명, 반복상태변수명 : ${배열 및 List}"
+			 		 th:each="todo, is : ${todoList}"  th:object="${todo}"
+			 iterStat : {index = 0, count = 1, size = 4, current = Todo(todoNo=1, todoTitle=테스트1, todoContent=테스트1 입니다., complete=Y, regDate=2024-10-30 15:26:32)}
+			 iterStat.index : 현재 반복의 인덱스를 0부터 시작하여 제공
+			 iterStat.count : 현재 반복 횟수를 1부터 시작하여 제공
+		  -->
+      <tr th:each="todo, iterStat : ${todoList}"  th:object="${todo}">
+		<td th:text="${iterStat.count}">행 번호</td>
 
         <td th:text="*{todoNo}">할 일 번호</td>
 
