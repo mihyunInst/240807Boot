@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.kh.todo.model.dao.TodoDAO;
 import edu.kh.todo.model.dto.Todo;
 import edu.kh.todo.model.mapper.TodoMapper;
 
@@ -29,8 +30,18 @@ import edu.kh.todo.model.mapper.TodoMapper;
 		 // + Bean 등록
 public class TodoServiceImpl implements TodoService{
 	
-	@Autowired // DI
+	@Autowired // TodoDAO 같은 타입 Bean 의존성 주입 (DI)
+	private TodoDAO dao;
+	
+	@Autowired // TodoMapper 같은 타입 Bean 의존성 주입 (DI)
 	private TodoMapper mapper;
+	
+	
+	// (TEST) todoNo가 1인 할 일 제목 조회
+	@Override
+	public String testTitle() {
+		return dao.testTitle();
+	}
 	
 	
 	// 할 일 목록 + 완료된 할 일 개수 조회

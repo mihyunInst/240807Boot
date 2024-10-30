@@ -60,9 +60,18 @@
 		SELECT MEMBER_NICKNAME, MEMBER_ADDRESS FROM "MEMBER"
 	 -->
 	 
+	 
+	 
+  	<!--  
+  		edu.kh.todo.model.mapper.TodoMapper 인터페이스의
+  		testTitle() 메서드와 연결
+  		==> testTitle() 메서드 호출 시 연결된 SQL 실행
+  	-->
   	
-  	
-  	
+  	<select id="testTitle" resultType="string">
+  		SELECT TODO_TITLE FROM TB_TODO
+		WHERE TODO_NO = 1
+  	</select>
   	
   	
   	

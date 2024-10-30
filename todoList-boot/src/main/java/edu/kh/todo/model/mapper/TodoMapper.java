@@ -8,20 +8,33 @@ import edu.kh.todo.model.dto.Todo;
 
 /* @Mapper
  * - Mybatis 제공 어노테이션
+ * 
+ * - MyBatis가 해당 인터페이스를 DAO로 인식하여 SQL 매핑을 처리
+ * 
  * - 해당 어노테이션 작성된 인터페이스는
  *   namespace에 해당 인터페이스가 작성된
  *   mapper.xml파일과 연결되어 SQL 호출/수행/결과 반환 가능
  *   
  * - Mybatis에서 제공하는 Mapper 상속 객체가 Bean으로 등록됨
+ * 
+ * - @Mapper를 사용할 때 @Repository는 필요하지 않음. MyBatis가 DAO 객체로 관리하기 때문
  * */
 
-@Mapper
+// MyBatis와 Spring을 함께 사용할 때는 Mapper만으로 충분하며, MyBatis가 XML에 작성한 SQL을 자동으로 매핑해 처리
+// -> DAO단 필요 X
+
+@Mapper 
 public interface TodoMapper {
 
 	/* Mapper의 메서드명 == mapper.xml 파일 내 태그의 id 
 	 * 
 	 * (메서드명과 id가 같은 태그가 서로 연결됨)
 	 * */
+	
+	/** (TEST) todoNo가 1인 할 일 제목 조회
+	 * @return title
+	 */
+	String testTitle();
 	
 	
 	/** 할 일 목록 조회
@@ -68,6 +81,8 @@ public interface TodoMapper {
 	 * @return totalCount
 	 */
 	int getTotalCount();
+
+
 
 	
 	

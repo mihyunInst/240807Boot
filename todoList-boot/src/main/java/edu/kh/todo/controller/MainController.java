@@ -24,8 +24,14 @@ public class MainController {
 	public String mainPage(Model model) {
 		
 		// 의존성 주입(DI) 확인 (진짜 Service 객체 들어옴!!!)
-		log.debug("service : " + service);
+		log.debug("service : " + service); // edu.kh.todo.model.service.TodoServiceImpl@7fa1e05e
 		
+		// DAO(@Repository 테스트 용 기능)
+		// todoNo가 1인 할 일 제목 조회하여 request scope에 추가
+		String testTitle = service.testTitle();
+		model.addAttribute("testTitle", testTitle);
+		
+		// ---------------------------------------------------------
 		
 		// Service 메서드 호출 후 결과 반환 받기
 		Map<String, Object> map = service.selectAll();

@@ -6,6 +6,11 @@ import java.util.Map;
 import edu.kh.todo.model.dto.Todo;
 
 public interface TodoService {
+	
+	/** (TEST) todoNo가 1인 할 일 제목 조회
+	 * @return title
+	 */
+	String testTitle();
 
 	/** 할 일 목록 + 완료된 할 일 개수 조회
 	 * @return map
@@ -57,5 +62,7 @@ public interface TodoService {
 	 * @return todoList
 	 */
 	List<Todo> selectList();
+
+
 
 }
