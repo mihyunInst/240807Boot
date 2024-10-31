@@ -24,6 +24,8 @@
 		  (필드명 == 컬럼명 인 경우 조회 결과가 자동으로 필드에 세팅)
 		  
 		  (필드명과 컬럼명이 같아지는 속성을 mybatis-config.xml에 작성함)
+		  
+		 - parameterType : SQL 구문에 전달될 파라미터의 클래스명이나 별칭 (필수속성 아님)
   	
   	 -->
   	
@@ -84,7 +86,7 @@
   	
   	<!--  edu.kh.todo.model.dto.Todo -> Todo 라고 써도 된다 (DBConfig에서 별칭 등록해둠 ) -->
   	<select id="selectAll" resultType="edu.kh.todo.model.dto.Todo">
-  		SELECT TODO_NO, TODO_TITLE, TODO_CONTENT, COMPLETE,
+  		SELECT TODO_NO, TODO_TITLE, COMPLETE,
 			TO_CHAR(REG_DATE, 'YYYY-MM-DD HH24:MI:SS') REG_DATE
 		FROM TB_TODO
 		ORDER BY TODO_NO

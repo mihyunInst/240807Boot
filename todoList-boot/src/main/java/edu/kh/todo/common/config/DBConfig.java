@@ -22,7 +22,6 @@ import com.zaxxer.hikari.HikariDataSource;
  * 
  * 
  * 
- * 
  * @PropertySource("경로")
  * - 지정된 경로의 properties 파일 내용을 읽어와 사용
  * - 사용할 properties 파일이 다수일 경우
@@ -186,13 +185,12 @@ public class DBConfig {
 	
 	// 위에서 열심히 만든 SqlSessionFactory를 이제 여기서 바로 사용..
 	// 결국 SqlSessionTemplate을 만들기 위한 일들이었다.
-	//  마이바티스와 스프링 연동모듈의 핵심이 되는 SqlSessionTemplate
+	// 마이바티스와 스프링 연동의 핵심이 되는 SqlSessionTemplate
 	
-	// DBCP(DataBase Connection Pool)
-	// SqlSessionTemplate : Connection + DBCP + Mybatis + 트랜잭션 제어 처리
+	// SqlSessionTemplate : Connection + DBCP(DataBase Connection Pool) + Mybatis + 트랜잭션 제어 처리
 	@Bean
 	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory factory) {
-		return new SqlSessionTemplate(factory);
+		return new SqlSessionTemplate(factory); // SqlSessionTemplate 를 Bean으로 등록
 	}
 	
 	
@@ -202,6 +200,13 @@ public class DBConfig {
 		dataSourceTransactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
+	/*
+	 * @Bean 어노테이션을 사용해 Spring 컨테이너에 DataSourceTransactionManager 객체를 등록하여, 
+	 * 데이터베이스 트랜잭션 관리를 Spring이 지원하도록 합니다.
+	DataSourceTransactionManager는 주어진 DataSource를 기반으로 트랜잭션을 관리하며, 
+	주로 JDBC 기반의 데이터베이스 트랜잭션을 다룰 때 사용됩니다.
+	즉, 이 메서드를 통해 Spring이 JDBC 데이터 소스에서의 트랜잭션을 자동으로 처리하도록 설정합니다.
+	 * */
 	
 	
 }
